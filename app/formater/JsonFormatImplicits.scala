@@ -1,7 +1,7 @@
 package formater
 
 import common.JsonFormater
-import dao.Tables.User
+import dao.Tables
 import play.api.libs.json.{Json, OFormat}
 
 /**
@@ -9,7 +9,7 @@ import play.api.libs.json.{Json, OFormat}
   *
   * @author 01372461
   */
-object JsonFormatImplicits extends JsonFormater {
+trait JsonFormatImplicits extends JsonFormater with Tables {
 
   implicit val userFormat: OFormat[User] = Json.format[User]
 

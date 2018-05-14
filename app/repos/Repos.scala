@@ -11,7 +11,7 @@ import slick.lifted.TableQuery
 import scala.concurrent.ExecutionContext
 
 @ImplementedBy(classOf[UserRepoImpl])
-trait UserRepo extends BaseRepo[UserTable, TableQuery[UserTable]]
+trait UserRepo extends BaseRepo[User, UserTable, TableQuery[UserTable]]
 
 @Singleton
 class UserRepoImpl @Inject() (dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)

@@ -4,9 +4,8 @@ import common.utils._
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import repos.UserRepo
-import formater.JsonFormatImplicits._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class UserController @Inject()(cc: ControllerComponents , service: UserRepo)(implicit ec: ExecutionContext) extends AbstractController(cc) {
