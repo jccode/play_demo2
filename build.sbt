@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
 
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test",
 
-  "com.github.jccode" %% "slickx" % "0.1",
+//  "com.github.jccode" %% "slickx-play" % "0.1",
+  "com.typesafe.play" %% "play-json" % "2.6.8",
 )
 
 
@@ -35,7 +36,7 @@ slick := {
   val password = ""
   val included = ""
   val excluded = "PLAY_EVOLUTIONS"
-  r.run("com.github.jccode.slickx.codegen.CodeGenerator", cp.files, Array(slickProfile, jdbcDriver, url, dir.getPath, pkg, user, password, "true", "com.github.jccode.slickx.codegen.CodeGenerator", included, excluded), s.log)
+  r.run("com.github.jccode.slickx.codegen.CodeGenerator", cp.files, Array(slickProfile, jdbcDriver, url, dir.getPath, pkg, user, password, "true", "com.github.jccode.slickx.codegen.PlayCodeGenerator", included, excluded), s.log)
   val outputFile = dir / pkg.replace(".", "/") / "Tables.scala"
   Seq(outputFile)
 }

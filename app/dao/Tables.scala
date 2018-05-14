@@ -8,8 +8,12 @@ object Tables extends {
 /** Slick data model trait for extension, choice of backend or usage in the cake pattern. (Make sure to initialize this late.) */
 trait Tables {
   val profile: slick.jdbc.JdbcProfile
-  import com.github.jccode.slickx.core._
   import profile.api._
+  import com.github.jccode.slickx.core._
+
+  import com.github.jccode.slickx.play.JsonFormatImplicits._
+  import play.api.libs.json._
+      import slick.model.ForeignKeyAction
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
   import slick.jdbc.{GetResult => GR}
 
@@ -26,16 +30,17 @@ trait Tables {
    *  @param createTime Database column CREATE_TIME SqlType(TIMESTAMP)
    *  @param updateTime Database column UPDATE_TIME SqlType(TIMESTAMP) */
   case class Account(id: Int, userId: Int, name: String, balance: Option[Int], createTime: java.sql.Timestamp, updateTime: java.sql.Timestamp) extends BaseEntity
+  object Account { implicit val accountFormat: OFormat[Account] = Json.format[Account]}
   /** GetResult implicit for fetching Account objects using plain SQL queries */
   implicit def GetResultAccount(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[java.sql.Timestamp]): GR[Account] = GR{
     prs => import prs._
-    Account.tupled((<<[Int], <<[Int], <<[String], <<?[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
+    (Account.apply _).tupled((<<[Int], <<[Int], <<[String], <<?[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
   }
   /** Table description of table ACCOUNT. Objects of this class serve as prototypes for rows in queries. */
   class AccountTable(_tableTag: Tag) extends profile.api.Table[Account](_tableTag, "ACCOUNT") with BaseTable {
-    def * = (id, userId, name, balance, createTime, updateTime) <> (Account.tupled, Account.unapply)
+    def * = (id, userId, name, balance, createTime, updateTime) <> ((Account.apply _).tupled, Account.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(userId), Rep.Some(name), balance, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> Account.tupled((_1.get, _2.get, _3.get, _4, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(userId), Rep.Some(name), balance, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> (Account.apply _).tupled((_1.get, _2.get, _3.get, _4, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ID SqlType(INTEGER), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
@@ -64,16 +69,17 @@ trait Tables {
    *  @param createTime Database column CREATE_TIME SqlType(TIMESTAMP)
    *  @param updateTime Database column UPDATE_TIME SqlType(TIMESTAMP) */
   case class Product(id: Int, name: String, price: Option[Int], stock: Option[Int], createTime: java.sql.Timestamp, updateTime: java.sql.Timestamp) extends BaseEntity
+  object Product { implicit val productFormat: OFormat[Product] = Json.format[Product]}
   /** GetResult implicit for fetching Product objects using plain SQL queries */
   implicit def GetResultProduct(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]], e3: GR[java.sql.Timestamp]): GR[Product] = GR{
     prs => import prs._
-    Product.tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
+    (Product.apply _).tupled((<<[Int], <<[String], <<?[Int], <<?[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
   }
   /** Table description of table PRODUCT. Objects of this class serve as prototypes for rows in queries. */
   class ProductTable(_tableTag: Tag) extends profile.api.Table[Product](_tableTag, "PRODUCT") with BaseTable {
-    def * = (id, name, price, stock, createTime, updateTime) <> (Product.tupled, Product.unapply)
+    def * = (id, name, price, stock, createTime, updateTime) <> ((Product.apply _).tupled, Product.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(name), price, stock, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> Product.tupled((_1.get, _2.get, _3, _4, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(name), price, stock, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> (Product.apply _).tupled((_1.get, _2.get, _3, _4, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ID SqlType(INTEGER), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
@@ -103,16 +109,17 @@ trait Tables {
    *  @param createTime Database column CREATE_TIME SqlType(TIMESTAMP)
    *  @param updateTime Database column UPDATE_TIME SqlType(TIMESTAMP) */
   case class User(id: Int, name: String, password: String, salt: String, mobile: Option[String], createTime: java.sql.Timestamp, updateTime: java.sql.Timestamp) extends BaseEntity
+  object User { implicit val userFormat: OFormat[User] = Json.format[User]}
   /** GetResult implicit for fetching User objects using plain SQL queries */
   implicit def GetResultUser(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[java.sql.Timestamp]): GR[User] = GR{
     prs => import prs._
-    User.tupled((<<[Int], <<[String], <<[String], <<[String], <<?[String], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
+    (User.apply _).tupled((<<[Int], <<[String], <<[String], <<[String], <<?[String], <<[java.sql.Timestamp], <<[java.sql.Timestamp]))
   }
   /** Table description of table USER. Objects of this class serve as prototypes for rows in queries. */
   class UserTable(_tableTag: Tag) extends profile.api.Table[User](_tableTag, "USER") with BaseTable {
-    def * = (id, name, password, salt, mobile, createTime, updateTime) <> (User.tupled, User.unapply)
+    def * = (id, name, password, salt, mobile, createTime, updateTime) <> ((User.apply _).tupled, User.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(name), Rep.Some(password), Rep.Some(salt), mobile, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> User.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(name), Rep.Some(password), Rep.Some(salt), mobile, Rep.Some(createTime), Rep.Some(updateTime)).shaped.<>({r=>import r._; _1.map(_=> (User.apply _).tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column ID SqlType(INTEGER), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("ID", O.AutoInc, O.PrimaryKey)
