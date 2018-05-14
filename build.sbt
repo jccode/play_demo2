@@ -20,8 +20,7 @@ libraryDependencies ++= Seq(
 
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test",
 
-//  "com.github.jccode" %% "slickx-play" % "0.1",
-  "com.typesafe.play" %% "play-json" % "2.6.8",
+  "com.github.jccode" %% "slickx-play" % "0.1",
 )
 
 
