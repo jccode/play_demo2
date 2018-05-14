@@ -33,8 +33,10 @@ slick := {
   val url = "jdbc:h2:./play"
   val user = "sa"
   val password = ""
-  r.run("slick.codegen.SourceCodeGenerator", cp.files, Array(slickProfile, jdbcDriver, url, dir.getPath, pkg, user, password, "true", "com.github.jccode.slickx.codegen.CodeGenerator"), s.log)
+  val included = ""
+  val excluded = "PLAY_EVOLUTIONS"
+  r.run("com.github.jccode.slickx.codegen.CodeGenerator", cp.files, Array(slickProfile, jdbcDriver, url, dir.getPath, pkg, user, password, "true", "com.github.jccode.slickx.codegen.CodeGenerator", included, excluded), s.log)
   val outputFile = dir / pkg.replace(".", "/") / "Tables.scala"
   Seq(outputFile)
 }
-sourceGenerators in Compile += slick
+//sourceGenerators in Compile += slick

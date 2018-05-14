@@ -1,9 +1,9 @@
 package services
 
+import com.google.inject.ImplementedBy
 import models.User
 
-object apis {
 
-  trait UserService extends BaseService[User]
+@ImplementedBy(classOf[UserServiceImpl])
+trait UserService extends BaseService[User]
 
-}

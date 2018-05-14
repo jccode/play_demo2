@@ -3,15 +3,17 @@ package controllers
 import common.utils._
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, ControllerComponents}
-import services.apis.UserService
+import repos.UserRepo
+import formater.JsonFormatImplicits._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserController @Inject()(cc: ControllerComponents, service: UserService)(implicit ec: ExecutionContext) extends AbstractController(cc) {
+class UserController @Inject()(cc: ControllerComponents , service: UserRepo)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   def userList() = Action.async {
     service.all.map(success(_))
+//    Future{ Ok("ok") }
   }
 
 }

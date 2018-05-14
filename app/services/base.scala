@@ -2,7 +2,9 @@ package services
 
 import com.github.jccode.slickx.core.BaseRepo
 import slick.lifted.TableQuery
+import common.Slick._
 import common.migrate._
+import common.utils._
 import scala.concurrent.{Future, ExecutionContext}
 
 trait BaseService[E] {
